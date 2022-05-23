@@ -7,16 +7,14 @@
     header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Authorization');
     require('db.php');
 
-
+    if(isset($_GET['email']) && isset($_GET['password'])){
   
-        $email          = mysqli_real_escape_string($con,$_POST['email']);
-        $password           = mysqli_real_escape_string($con,$_POST['password']);
+        $email          = mysqli_real_escape_string($con,$_GET['email']);
+        $password           = mysqli_real_escape_string($con,$_GET['password']);
         //$email          = mysqli_real_escape_string($con,$_POST['email']);
         $checkTokenRes  = mysqli_query($con, "SELECT * FROM users WHERE email = '$email' AND password = '" . md5($password) . "'");
 
-        //email authentication      
-        echo json_encode({"email"=>$email, "password"=>$password})
-
+        //email authentication     
 
         if(mysqli_num_rows($checkTokenRes)>0){
             $row = mysqli_fetch_assoc($checkTokenRes);
@@ -79,8 +77,8 @@
 
         
 
-
-    echo json_encode({"status"=>$status, "data"=>$data, "code"=>$code})
+    }
+    echo json_encode(["status"=>$status, "data"=>$data, "code"=>$code])
 
  
 
